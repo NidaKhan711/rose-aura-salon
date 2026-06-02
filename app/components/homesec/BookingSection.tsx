@@ -19,7 +19,6 @@ export default function BookingSection() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear messages when user starts typing
     setSuccess("");
     setError("");
   };
