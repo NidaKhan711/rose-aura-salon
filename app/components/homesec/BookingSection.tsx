@@ -1,8 +1,75 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function BookingSection() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    date: "",
+    time: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear messages when user starts typing
+    setSuccess("");
+    setError("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.service || !formData.date || !formData.time) {
+      setError("Please fill in all required fields");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/admin/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess("Appointment booked successfully! We'll contact you soon.");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          date: "",
+          time: "",
+          message: "",
+        });
+      } else {
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      setError("Network error. Please check your connection.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get today's date in YYYY-MM-DD format for min date
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <section
       id="booking"
@@ -74,6 +141,27 @@ export default function BookingSection() {
             className="mt-8 h-[2px] bg-[var(--primary)]"
           />
 
+          {/* Success/Error Messages */}
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 p-4 bg-green-100 text-green-700 rounded-lg border border-green-200"
+            >
+              {success}
+            </motion.div>
+          )}
+
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg border border-red-200"
+            >
+              {error}
+            </motion.div>
+          )}
+
         </motion.div>
 
         {/* FORM CARD */}
@@ -94,67 +182,139 @@ export default function BookingSection() {
               Reserve Your Appointment
             </h3>
 
-            <div className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
 
-              {[
-                { type: "text", placeholder: "Full Name" },
-                { type: "email", placeholder: "Email Address" },
-              ].map((input, i) => (
-                <motion.input
-                  key={i}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  whileFocus={{ scale: 1.02 }}
-                  className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70 transition"
-                />
-              ))}
+              <motion.input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Full Name *"
+                required
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                whileFocus={{ scale: 1.02 }}
+                className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70 transition"
+              />
 
-              <motion.select
+              <motion.input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email Address *"
+                required
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                whileFocus={{ scale: 1.02 }}
+                className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70 transition"
+              />
+
+              <motion.input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone Number *"
+                required
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 whileFocus={{ scale: 1.02 }}
+                className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70 transition"
+              />
+
+              <div className="grid grid-cols-2 gap-4">
+                <motion.input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  min={today}
+                  required
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 }}
+                  whileFocus={{ scale: 1.02 }}
+                  className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70 transition"
+                />
+
+                <motion.select
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  required
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  whileFocus={{ scale: 1.02 }}
+                  className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70"
+                >
+                  <option value="">Select Time *</option>
+                  <option value="09:00 AM">09:00 AM</option>
+                  <option value="10:00 AM">10:00 AM</option>
+                  <option value="11:00 AM">11:00 AM</option>
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="01:00 PM">01:00 PM</option>
+                  <option value="02:00 PM">02:00 PM</option>
+                  <option value="03:00 PM">03:00 PM</option>
+                  <option value="04:00 PM">04:00 PM</option>
+                  <option value="05:00 PM">05:00 PM</option>
+                </motion.select>
+              </div>
+
+              <motion.select
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                required
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                whileFocus={{ scale: 1.02 }}
                 className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none bg-white/70"
               >
-                <option>Choose Service</option>
-                <option>Hair Styling</option>
-                <option>Facial Treatment</option>
-                <option>Manicure & Pedicure</option>
-                <option>Full Beauty Package</option>
+                <option value="">Choose Service *</option>
+                <option value="Hair Styling">Hair Styling</option>
+                <option value="Facial Treatment">Facial Treatment</option>
+                <option value="Manicure & Pedicure">Manicure & Pedicure</option>
+                <option value="Spa Therapy">Spa Therapy</option>
+                <option value="Makeup">Makeup</option>
+                <option value="Full Beauty Package">Full Beauty Package</option>
               </motion.select>
 
               <motion.textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Special requests or message (optional)"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.4 }}
                 whileFocus={{ scale: 1.02 }}
-                placeholder="Message (optional)"
                 className="w-full p-3 border border-gray-200 focus:border-[var(--primary)] outline-none h-24 resize-none bg-white/70 transition"
               />
 
               <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  y: -3,
-                  boxShadow: "0px 20px 40px rgba(0,0,0,0.15)",
-                }}
+                type="submit"
+                disabled={loading}
+                whileHover={{ scale: 1.05, y: -3, boxShadow: "0px 20px 40px rgba(0,0,0,0.15)" }}
                 whileTap={{ scale: 0.97 }}
-                className="w-full relative bg-[var(--primary)] text-white py-3 border border-[var(--accent)] overflow-hidden group transition"
+                className="w-full relative bg-[var(--primary)] text-white py-3 border border-[var(--accent)] overflow-hidden group transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
 
                 {/* BUTTON SHINE */}
                 <span className="absolute inset-0 bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
 
                 <span className="relative">
-                  Confirm Appointment
+                  {loading ? "Booking..." : "Confirm Appointment"}
                 </span>
 
               </motion.button>
 
-            </div>
+            </form>
 
           </div>
 

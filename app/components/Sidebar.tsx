@@ -15,7 +15,7 @@ const menuItems = [
   { name: "Dashboard", path: "/admin", icon: FiHome },
   { name: "Bookings", path: "/admin/bookings", icon: FiCalendar },
   { name: "Contact", path: "/admin/contact", icon: FiMessageSquare },
-  { name: "Subscriptions", path: "/admin/subscriptions", icon: FiMail },
+  { name: "Subscriptions", path: "/admin/subscribe", icon: FiMail },
   { name: "Gallery", path: "/admin/gallery", icon: FiImage },
 ];
 
@@ -23,11 +23,11 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("auth");
-    localStorage.removeItem("adminName");
-    router.push("/login");
-  };
+
+  const handleLogout = async () => {
+  await fetch("/api/auth/logout", { method: "POST" });
+  router.push("/login");
+};
 
   return (
     <aside className="w-72 bg-white border-r border-accent flex flex-col">

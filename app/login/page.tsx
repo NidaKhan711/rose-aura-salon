@@ -1,31 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const auth = localStorage.getItem("auth");
-    if (auth === "true") {
-      router.push("/admin");
-    }
-  }, [router]);
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
-    if (email === "admin@gmail.com" && password === "admin123") {
-      localStorage.setItem("auth", "true");
-      localStorage.setItem("adminName", "Admin Rose");
-      router.push("/admin");
-    } else {
-      alert("Invalid credentials! Use: admin@gmail.com / admin123");
+    setError("");
+    
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        setError(data.error || "Login failed");
+      }
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -36,6 +43,12 @@ export default function LoginPage() {
           <p className="text-gray-500 mt-2">Admin Portal</p>
         </div>
 
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
         <div className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -45,7 +58,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-accent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+              className="w-full px-4 py-2 border border-accent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="admin@gmail.com"
             />
           </div>
@@ -59,7 +72,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              className="w-full px-4 py-2 border border-accent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+              className="w-full px-4 py-2 border border-accent rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="••••••"
             />
           </div>
@@ -67,15 +80,10 @@ export default function LoginPage() {
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-secondary transition duration-300 disabled:opacity-50"
+            className="w-full bg-primary text-white py-2.5 rounded-lg font-semibold hover:bg-secondary transition disabled:opacity-50"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-        </div>
-
-        <div className="mt-6 text-center text-xs text-gray-400 border-t border-accent pt-4">
-          <p>Demo Credentials:</p>
-          <p className="font-mono">admin@gmail.com / admin123</p>
         </div>
       </div>
     </div>

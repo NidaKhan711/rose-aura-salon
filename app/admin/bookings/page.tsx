@@ -1,42 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiTrash2, FiCheckCircle, FiClock } from "react-icons/fi";
 
 type Booking = {
-  id: number;
+  _id: string;
   name: string;
+  email: string;
   service: string;
   date: string;
   time: string;
-  status: "pending" | "confirmed" | "completed";
+  status: string;
 };
 
-const mockBookings: Booking[] = [
-  { id: 1, name: "Sarah Johnson", service: "Hair Styling", date: "2024-03-20", time: "10:00 AM", status: "pending" },
-  { id: 2, name: "Emily Davis", service: "Facial Treatment", date: "2024-03-20", time: "2:00 PM", status: "confirmed" },
-  { id: 3, name: "Jessica Lee", service: "Spa Therapy", date: "2024-03-21", time: "11:30 AM", status: "completed" },
-];
-
 export default function BookingsPage() {
-  const [bookings, setBookings] = useState<Booking[]>(mockBookings);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const updateStatus = (id: number, newStatus: Booking["status"]) => {
-    setBookings(bookings.map(b => b.id === id ? { ...b, status: newStatus } : b));
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const res = await fetch("/api/admin/bookings");
+      const data = await res.json();
+      setBookings(data);
+    } catch (error) {
+      console.error("Failed to fetch bookings:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteBooking = (id: number) => {
-    setBookings(bookings.filter(b => b.id !== id));
+  const updateStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`/api/admin/bookings/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      fetchBookings();
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  };
+
+  const deleteBooking = async (id: string) => {
+    if (!confirm("Are you sure?")) return;
+    try {
+      await fetch(`/api/admin/bookings/${id}`, { method: "DELETE" });
+      fetchBookings();
+    } catch (error) {
+      console.error("Failed to delete booking:", error);
+    }
   };
 
   const getStatusBadge = (status: string) => {
-    const styles = {
+    const styles: any = {
       pending: "bg-yellow-100 text-yellow-700",
       confirmed: "bg-green-100 text-green-700",
       completed: "bg-blue-100 text-blue-700",
+      cancelled: "bg-red-100 text-red-700",
     };
-    return styles[status as keyof typeof styles] || "bg-gray-100";
+    return styles[status] || "bg-gray-100";
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">
@@ -60,33 +96,35 @@ export default function BookingsPage() {
             </thead>
             <tbody className="divide-y divide-accent">
               {bookings.map((booking) => (
-                <tr key={booking.id} className="hover:bg-soft/50 transition">
-                  <td className="px-6 py-4 font-medium">{booking.name}</td>
+                <tr key={booking._id} className="hover:bg-soft/50 transition">
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="font-medium">{booking.name}</p>
+                      <p className="text-xs text-gray-500">{booking.email}</p>
+                    </div>
+                  </td>
                   <td className="px-6 py-4 text-gray-600">{booking.service}</td>
                   <td className="px-6 py-4 text-gray-600">{booking.date}</td>
                   <td className="px-6 py-4 text-gray-600">{booking.time}</td>
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(booking.status)}`}>
-                      {booking.status}
-                    </span>
+                    <select
+                      value={booking.status}
+                      onChange={(e) => updateStatus(booking._id, e.target.value)}
+                      className={`px-2 py-1 rounded-full text-xs font-medium border-0 focus:ring-1 focus:ring-primary ${getStatusBadge(booking.status)}`}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => updateStatus(booking.id, "confirmed")}
-                        className="p-1.5 text-green-600 hover:bg-green-50 rounded transition"
-                        title="Confirm"
-                      >
-                        <FiCheckCircle size={18} />
-                      </button>
-                      <button
-                        onClick={() => deleteBooking(booking.id)}
-                        className="p-1.5 text-red-500 hover:bg-red-50 rounded transition"
-                        title="Delete"
-                      >
-                        <FiTrash2 size={18} />
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => deleteBooking(booking._id)}
+                      className="p-1.5 text-red-500 hover:bg-red-50 rounded transition"
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
                   </td>
                 </tr>
               ))}
