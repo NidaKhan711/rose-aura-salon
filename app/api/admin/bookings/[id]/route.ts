@@ -2,18 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Booking from "@/models/Booking";
 
-// ✅ UPDATE
+// UPDATE
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
+    const { id } = await params;
     const body = await req.json();
 
     const booking = await Booking.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true }
     );
@@ -27,15 +28,17 @@ export async function PUT(
   }
 }
 
-// ✅ DELETE
+// DELETE
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    await Booking.findByIdAndDelete(params.id);
+    const { id } = await params;
+
+    await Booking.findByIdAndDelete(id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

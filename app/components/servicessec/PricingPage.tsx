@@ -134,15 +134,16 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              {/* BUTTON */}
-              <motion.button
+              {/* BUTTON - Changed to anchor tag with href="#book" */}
+              <motion.a
+                href="#booking"
                 whileHover={{
                   y: -3,
                   scale: 1.03,
                   boxShadow: "0px 15px 30px rgba(0,0,0,0.15)",
                 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-8 w-full relative border border-[var(--primary)] text-[var(--primary)] py-3 overflow-hidden group transition"
+                className="mt-8 w-full relative border border-[var(--primary)] text-[var(--primary)] py-3 overflow-hidden group transition block text-center cursor-pointer"
               >
 
                 {/* BUTTON SHINE */}
@@ -152,7 +153,7 @@ export default function PricingPage() {
                   Book Now
                 </span>
 
-              </motion.button>
+              </motion.a>
 
             </motion.div>
           ))}

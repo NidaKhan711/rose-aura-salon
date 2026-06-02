@@ -28,13 +28,19 @@ export default function HeroSection() {
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
 
-            <button className="bg-[var(--primary)] text-white px-6 py-3 border border-black hover:bg-white hover:text-black transition">
+            <a 
+              href="#booking" 
+              className="bg-[var(--primary)] text-white px-6 py-3 border border-black hover:bg-white hover:text-black transition cursor-pointer"
+            >
               Book Appointment
-            </button>
+            </a>
 
-            <button className="border border-[var(--accent)] px-6 py-3 hover:bg-[#FBF5DD] transition">
+            <a 
+              href="/services" 
+              className="border border-[var(--accent)] px-6 py-3 hover:bg-[#FBF5DD] transition cursor-pointer"
+            >
               View Services
-            </button>
+            </a>
 
           </div>
         </motion.div>

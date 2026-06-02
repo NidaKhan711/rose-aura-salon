@@ -228,7 +228,7 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white text-sm rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 cursor-pointer bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white text-sm rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -251,28 +251,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* BOTTOM BAR */}
-        <div className="mt-12 pt-6 border-t border-[var(--accent)] flex flex-col md:flex-row items-center justify-between gap-4">
-          
-          <p className="text-gray-500 text-xs flex items-center gap-1">
+        {/* BOTTOM BAR - Only Copyright now */}
+        <div className="mt-12 pt-6 border-t border-[var(--accent)] text-center">
+          <p className="text-gray-500 text-xs flex items-center justify-center gap-1">
             © {new Date().getFullYear()} Rose Aura. All rights reserved.
             <FiHeart size={12} className="text-red-500 animate-pulse" />
           </p>
-
-          {/* Footer Links */}
-          <div className="flex gap-6 text-xs text-gray-500">
-            <a href="/privacy" className="hover:text-[var(--primary)] transition">Privacy Policy</a>
-            <a href="/terms" className="hover:text-[var(--primary)] transition">Terms of Service</a>
-            <a href="/sitemap" className="hover:text-[var(--primary)] transition">Sitemap</a>
-          </div>
-
-          {/* Payment Methods */}
-          <div className="flex gap-3">
-            <span className="text-xs text-gray-400">Secure payments:</span>
-            <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png" alt="Visa" className="h-5 opacity-60 hover:opacity-100 transition" />
-            <img src="https://cdn-icons-png.flaticon.com/512/196/196561.png" alt="Mastercard" className="h-5 opacity-60 hover:opacity-100 transition" />
-            <img src="https://cdn-icons-png.flaticon.com/512/196/196539.png" alt="PayPal" className="h-5 opacity-60 hover:opacity-100 transition" />
-          </div>
         </div>
 
         {/* SCROLL TO TOP BUTTON */}
@@ -288,7 +272,6 @@ export default function Footer() {
 
       </div>
 
-      {/* Add animation keyframes to globals.css */}
       <style jsx>{`
         @keyframes fade-in {
           from {

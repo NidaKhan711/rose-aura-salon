@@ -56,8 +56,9 @@ export default function FinalCTASection() {
           className="h-[2px] bg-[var(--accent)] mx-auto mt-10"
         />
 
-        {/* CTA Button */}
-        <motion.button
+        {/* CTA Button as Link */}
+        <motion.a
+          href="/services" // Change this to your desired URL
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
@@ -67,10 +68,10 @@ export default function FinalCTASection() {
             scale: 1.03,
           }}
           whileTap={{ scale: 0.98 }}
-          className="mt-10 px-10 py-4 border border-[var(--primary)] text-[var(--primary)] font-medium tracking-[0.15em] hover:bg-[var(--primary)] hover:text-white transition-all duration-300"
+          className="inline-block mt-10 px-10 py-4 border border-[var(--primary)] text-[var(--primary)] font-medium tracking-[0.15em] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer"
         >
           START YOUR BEAUTY JOURNEY
-        </motion.button>
+        </motion.a>
 
       </div>
     </section>

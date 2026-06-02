@@ -36,21 +36,6 @@ export default function FeaturedWork() {
     }
   };
 
-  // Professional salon placeholder images (fallback when no images in DB)
-  const placeholderImages = [
-    "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800", // Hair styling
-    "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=800", // Salon treatment
-    "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=800", // Makeup
-    "https://images.unsplash.com/photo-1633681926022-84c23e8cb3d0?w=800", // Hair color
-    "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800", // Nail art
-    "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800", // Hair drying
-  ];
-
-  // Show placeholder images if no images in database
-  const displayImages = images.length > 0 
-    ? images.map(img => img.imageUrl) 
-    : placeholderImages;
-
   if (loading) {
     return (
       <section className="py-32 px-6 bg-white">
@@ -99,12 +84,12 @@ export default function FeaturedWork() {
           </p>
         </motion.div>
 
-        {/* MASONRY GRID */}
-        {displayImages.length > 0 ? (
+        {/* MASONRY GRID - Only backend images */}
+        {images.length > 0 ? (
           <div className="columns-2 md:columns-3 gap-5 mt-20 space-y-5">
-            {displayImages.map((img, i) => (
+            {images.map((img, i) => (
               <motion.div
-                key={i}
+                key={img._id || i}
                 initial={{ opacity: 0, y: 60, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -118,13 +103,13 @@ export default function FeaturedWork() {
                 }}
                 className="relative overflow-hidden group break-inside-avoid shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
                 onClick={() => {
-                  window.open(img, '_blank');
+                  window.open(img.imageUrl, '_blank');
                 }}
               >
                 {/* IMAGE */}
                 <img
-                  src={img}
-                  alt={`Gallery ${i + 1}`}
+                  src={img.imageUrl}
+                  alt={img.title || `Gallery ${i + 1}`}
                   className="w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
@@ -136,16 +121,24 @@ export default function FeaturedWork() {
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <div className="absolute -left-40 top-0 h-full w-20 bg-white/20 rotate-12 group-hover:translate-x-[500%] transition-transform duration-1000" />
                 </div>
+
+                {/* OPTIONAL: Show title on hover */}
+                {img.title && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                    <p className="text-white text-sm font-medium">{img.title}</p>
+                    {img.description && (
+                      <p className="text-white/80 text-xs mt-1">{img.description}</p>
+                    )}
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
         ) : (
           <div className="mt-20 text-center">
-            <p className="text-gray-400">Gallery images coming soon...</p>
+            <p className="text-gray-400">No gallery images available. Please add some images from the admin panel.</p>
           </div>
         )}
-
-        {/* No admin link here - this is client-facing only */}
       </div>
     </section>
   );
