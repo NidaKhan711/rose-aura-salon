@@ -8,6 +8,7 @@ import polor from "../../../public/imges/polor.jpg";
 import aboutb from "../../../public/imges/aboutb.jpg";
 import ensta from "../../../public/imges/ensta.jpg";
 
+
 export default function GreenEditorialSection() {
   return (
     <>
