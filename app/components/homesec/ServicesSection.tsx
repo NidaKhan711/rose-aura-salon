@@ -2,31 +2,37 @@
 
 import { motion } from "framer-motion";
 import { FaCut, FaSpa, FaPalette, FaHandSparkles } from "react-icons/fa";
+import Image from "next/image";
+
+import hair from "../../../public/imges/hair.jpg";
+import skin from "../../../public/imges/look.jpg";
+import makeup from "../../../public/imges/eye.jpg";
+import nails from "../../../public/imges/nails.jpg";
 
 const services = [
   {
     title: "Hair Styling",
     desc: "Modern cuts, styling and treatments.",
     icon: <FaCut />,
-    img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702",
+    img: hair,
   },
   {
     title: "Skin Care",
     desc: "Facials and skin treatments for glowing skin.",
     icon: <FaSpa />,
-    img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571",
+    img: skin,
   },
   {
     title: "Makeup Art",
     desc: "Bridal and event makeup for every occasion.",
     icon: <FaPalette />,
-    img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
+    img: makeup,
   },
   {
     title: "Nail Care",
     desc: "Manicure and nail styling with premium finish.",
     icon: <FaHandSparkles />,
-    img: "https://images.unsplash.com/photo-1604654894610-df63bc536371",
+    img: nails,
   },
 ];
 
@@ -76,15 +82,16 @@ export default function ServicesSection() {
 
               {/* SHINE EFFECT */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -left-40 top-0 h-full w-20 bg-white/30 rotate-12 translate-x-0 group-hover:translate-x-[500%] transition-transform duration-1000" />
+                <div className="absolute -left-40 top-0 h-full w-20 bg-white/30 rotate-12 group-hover:translate-x-[500%] transition-transform duration-1000" />
               </div>
 
               {/* IMAGE */}
               <div className="relative w-full h-40 overflow-hidden">
-                <img
+                <Image
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition duration-500" />
               </div>

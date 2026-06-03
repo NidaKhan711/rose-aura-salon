@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+import polish from "../../../public/imges/polishh.jpg";
 
 const points = [
   {
@@ -65,7 +67,6 @@ export default function ExperienceSection() {
                 whileHover={{ x: 8 }}
                 className="group pl-6 border-l-2 border-[var(--accent)] hover:border-[var(--primary)] transition-all duration-300"
               >
-
                 <h4 className="font-semibold text-[var(--primary)] text-lg group-hover:tracking-wide transition-all duration-300">
                   {item.title}
                 </h4>
@@ -73,7 +74,6 @@ export default function ExperienceSection() {
                 <p className="text-gray-600 text-sm mt-2 leading-relaxed">
                   {item.desc}
                 </p>
-
               </motion.div>
             ))}
 
@@ -90,21 +90,18 @@ export default function ExperienceSection() {
           className="relative group"
         >
 
-          {/* FLOATING FRAME */}
           <div className="relative w-full h-[520px] overflow-hidden border border-[#E7E1B1] shadow-xl">
 
-            {/* IMAGE */}
-            <motion.img
-              src="https://images.unsplash.com/photo-1522337660859-02fbefca4702"
+            {/* NEXT IMAGE */}
+            <Image
+              src={polish}
               alt="Salon Experience"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              initial={{ scale: 1.1 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 1.2 }}
-              viewport={{ once: true }}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              priority
             />
 
-            {/* SOFT LUXURY OVERLAY */}
+            {/* OVERLAY */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
 
             {/* LIGHT SWEEP EFFECT */}

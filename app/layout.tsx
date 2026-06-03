@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
+ import lenis from "lenis";
 
 const poppins = Poppins({
   subsets: ["latin"],

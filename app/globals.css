@@ -45,8 +45,9 @@ h1, h2, h3, h4 {
   color: #fff;
 }
 html, body {
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+    overflow-x: hidden;
+ scroll-behavior: auto !important;
+   scroll-behavior: smooth;
 }
 html.lenis {
   height: auto;

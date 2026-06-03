@@ -1,27 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+
 import OurStorySection from "../components/aboutsec/OurStorySection";
 import OurValuesSection from "../components/aboutsec/OurValuesSection";
 import MeetOurExperts from "../components/aboutsec/MeetOurExperts";
-import  BookingSection from "../components/homesec/BookingSection";
+import BookingSection from "../components/homesec/BookingSection";
+import abouta from "../../public/imges/about.jpg";
 
 export default function AboutHero() {
   return (
     <>
+      {/* HERO SECTION */}
       <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
 
         {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2070&auto=format&fit=crop')",
-          }}
+        <Image
+          src={abouta}
+          alt="About Rose Aura Salon"
+          fill
+          priority
+          className="object-cover object-center"
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-black/50" />
 
         {/* Content */}
         <motion.div
@@ -48,11 +52,11 @@ export default function AboutHero() {
 
       </section>
 
-      {/* OUR STORY SECTION */}
+      {/* OTHER SECTIONS */}
       <OurStorySection />
-      <OurValuesSection/>
-      <MeetOurExperts/>
-      <BookingSection/>
+      <OurValuesSection />
+      <MeetOurExperts />
+      <BookingSection />
     </>
   );
 }

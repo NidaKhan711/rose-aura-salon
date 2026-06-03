@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+import hero from "../../../public/imges/hero.jpg";
 
 export default function HeroSection() {
   return (
     <section className="min-h-screen flex items-center bg-white px-6 pt-32 overflow-hidden">
-
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-
+        
         {/* TEXT */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -27,35 +28,37 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-
-            <a 
-              href="#booking" 
-              className="bg-[var(--primary)] text-white px-6 py-3 border border-black hover:bg-white hover:text-black transition cursor-pointer"
+            <a
+              href="#booking"
+              className="bg-[var(--primary)] text-white px-6 py-3 border border-black hover:bg-white hover:text-black transition"
             >
               Book Appointment
             </a>
 
-            <a 
-              href="/services" 
-              className="border border-[var(--accent)] px-6 py-3 hover:bg-[#FBF5DD] transition cursor-pointer"
+            <a
+              href="/services"
+              className="border border-[var(--accent)] px-6 py-3 hover:bg-[#FBF5DD] transition"
             >
               View Services
             </a>
-
           </div>
         </motion.div>
 
-        {/* IMAGE */}
+        {/* IMAGE (Next.js optimized) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2"
-            alt="Beauty Model"
-            className="w-full h-[500px] object-cover shadow-lg"
-          />
+          <div className="relative w-full h-[500px] shadow-lg">
+            <Image
+              src={hero}
+              alt="Hero Image"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
         </motion.div>
 
       </div>

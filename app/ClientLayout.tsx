@@ -11,15 +11,21 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  
+
   // Hide navbar/footer on admin routes and login page
-  const isAdminRoute = pathname?.startsWith("/admin") || pathname === "/login";
+  const isAdminRoute =
+    pathname?.startsWith("/admin") || pathname === "/login";
 
   return (
     <>
       <SmoothScroll />
+
       {!isAdminRoute && <Navbar />}
-      {children}
+
+      <main className="flex-1">
+        {children}
+      </main>
+
       {!isAdminRoute && <Footer />}
     </>
   );
