@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { 
-  FiInstagram, FiFacebook, FiTwitter, FiArrowUp, 
-  FiMapPin, FiPhone, FiMail, FiClock, FiHeart,
-  FiLinkedin, FiSend, FiGithub
+import Link from "next/link";
+import {
+  FiInstagram,
+  FiFacebook,
+  FiTwitter,
+  FiArrowUp,
+  FiMapPin,
+  FiPhone,
+  FiMail,
+  FiClock,
+  FiHeart,
+  FiLinkedin,
+  FiSend,
 } from "react-icons/fi";
 
 export default function Footer() {
@@ -13,7 +22,6 @@ export default function Footer() {
   const [message, setMessage] = useState({ type: "", text: "" });
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  // Show/hide scroll button based on scroll position
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 300);
@@ -23,23 +31,14 @@ export default function Footer() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email) {
       setMessage({ type: "error", text: "Please enter your email address" });
-      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
-      return;
-    }
-    
-    if (!email.includes("@") || !email.includes(".")) {
-      setMessage({ type: "error", text: "Please enter a valid email address" });
       setTimeout(() => setMessage({ type: "", text: "" }), 3000);
       return;
     }
@@ -50,243 +49,208 @@ export default function Footer() {
     try {
       const response = await fetch("/api/admin/subscribe", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setMessage({ type: "success", text: data.message || "Subscribed successfully! ✨" });
+        setMessage({
+          type: "success",
+          text: data.message || "Subscribed successfully ✨",
+        });
         setEmail("");
-        setTimeout(() => setMessage({ type: "", text: "" }), 3000);
       } else {
-        setMessage({ type: "error", text: data.error || "Subscription failed. Please try again." });
-        setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+        setMessage({
+          type: "error",
+          text: data.error || "Subscription failed",
+        });
       }
-    } catch (error) {
-      console.error("Network error:", error);
-      setMessage({ type: "error", text: "Network error. Please check your connection." });
-      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Network error. Try again.",
+      });
     } finally {
       setLoading(false);
+      setTimeout(() => setMessage({ type: "", text: "" }), 3000);
     }
   };
 
-  // Contact Information
   const contactInfo = [
-    { icon: FiMapPin, text: "123 Luxury Street, Beverly Hills, CA 90210", link: "https://maps.google.com" },
+    { icon: FiMapPin, text: "123 Luxury Street, Beverly Hills, CA", link: "https://maps.google.com" },
     { icon: FiPhone, text: "+1 (555) 123-4567", link: "tel:+15551234567" },
     { icon: FiMail, text: "hello@roseaura.com", link: "mailto:hello@roseaura.com" },
   ];
 
-  // Working Hours
   const workingHours = [
-    { day: "Monday - Friday", hours: "9:00 AM - 8:00 PM", closed: false },
-    { day: "Saturday", hours: "10:00 AM - 6:00 PM", closed: false },
-    { day: "Sunday", hours: "Closed", closed: true },
+    { day: "Mon - Fri", hours: "9:00 AM - 8:00 PM" },
+    { day: "Saturday", hours: "10:00 AM - 6:00 PM" },
+    { day: "Sunday", hours: "Closed" },
+  ];
+
+  // Social media links - Update these with your actual URLs
+  const socialLinks = [
+    { 
+      icon: FiInstagram, 
+      url: "https://instagram.com/roseaura", 
+      label: "Instagram",
+      color: "hover:text-pink-600"
+    },
+    { 
+      icon: FiFacebook, 
+      url: "https://facebook.com/roseaura", 
+      label: "Facebook",
+      color: "hover:text-blue-700"
+    },
+    { 
+      icon: FiTwitter, 
+      url: "https://twitter.com/roseaura", 
+      label: "Twitter",
+      color: "hover:text-blue-400"
+    },
+    { 
+      icon: FiLinkedin, 
+      url: "https://linkedin.com/company/roseaura", 
+      label: "LinkedIn",
+      color: "hover:text-blue-800"
+    },
   ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-white to-gray-50 border-t border-[var(--accent)] pt-20 pb-16 px-6 overflow-hidden">
+    <footer className="relative bg-gradient-to-b from-white to-gray-50 border-t pt-20 pb-16 px-6">
 
-      {/* Background Decorations */}
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-[var(--primary)]/5 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[var(--accent)]/5 rounded-full blur-3xl" />
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* Main Footer Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-
-          {/* BRAND SECTION */}
-          <div>
-            <h2 className="text-2xl font-semibold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent">
-              Rose Aura
-            </h2>
-            <p className="mt-4 text-gray-600 text-sm leading-relaxed">
-              A luxury beauty experience designed to enhance your natural elegance.
-              Precision, care, and calm environment for every client.
-            </p>
-            
-            {/* Social Media */}
-            <div className="flex gap-4 mt-6">
-              {[
-                { icon: FiInstagram, link: "https://instagram.com", color: "hover:text-pink-600" },
-                { icon: FiFacebook, link: "https://facebook.com", color: "hover:text-blue-600" },
-                { icon: FiTwitter, link: "https://twitter.com", color: "hover:text-sky-500" },
-                { icon: FiLinkedin, link: "https://linkedin.com", color: "hover:text-blue-700" },
-              ].map((social, i) => (
-                <a
-                  key={i}
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-gray-500 ${social.color} transition-all duration-300 hover:scale-110 hover:-translate-y-1`}
-                >
-                  <social.icon size={20} />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* QUICK LINKS */}
-          <div>
-            <h4 className="text-[var(--primary)] font-semibold mb-4 relative inline-block">
-              Quick Links
-              <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[var(--accent)]"></span>
-            </h4>
-            <ul className="space-y-3 text-gray-600 text-sm">
-              {["Home", "About", "Services", "Gallery", "Contact"].map((item, i) => (
-                <li key={i}>
-                  <a 
-                    href={`/#${item.toLowerCase()}`} 
-                    className="hover:text-[var(--primary)] transition-all duration-300 hover:translate-x-1 inline-block"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* CONTACT INFO */}
-          <div>
-            <h4 className="text-[var(--primary)] font-semibold mb-4 relative inline-block">
-              Contact Info
-              <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[var(--accent)]"></span>
-            </h4>
-            <ul className="space-y-3 text-gray-600 text-sm">
-              {contactInfo.map((info, i) => (
-                <li key={i}>
-                  <a 
-                    href={info.link} 
-                    target={info.icon === FiMapPin ? "_blank" : "_self"}
-                    rel="noopener noreferrer"
-                    className="flex items-start gap-2 hover:text-[var(--primary)] transition group"
-                  >
-                    <info.icon className="text-[var(--primary)] mt-0.5 flex-shrink-0 group-hover:scale-110 transition" size={14} />
-                    <span className="group-hover:translate-x-1 transition">{info.text}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* WORKING HOURS */}
-          <div>
-            <h4 className="text-[var(--primary)] font-semibold mb-4 relative inline-block">
-              Working Hours
-              <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[var(--accent)]"></span>
-            </h4>
-            <ul className="space-y-3 text-gray-600 text-sm">
-              {workingHours.map((schedule, i) => (
-                <li key={i} className="flex justify-between items-center">
-                  <span className="flex items-center gap-2">
-                    <FiClock size={12} className="text-[var(--primary)]" />
-                    {schedule.day}
-                  </span>
-                  <span className={schedule.closed ? "text-red-500 font-medium" : "text-gray-700"}>
-                    {schedule.hours}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            
-            {/* Appointment Button */}
-            <a 
-              href="/contact"
-              className="inline-flex items-center gap-2 mt-6 px-4 py-2 bg-[var(--primary)] text-white text-sm rounded-lg hover:bg-[var(--secondary)] transition-all duration-300 hover:scale-105 hover:shadow-lg w-full justify-center"
-            >
-              <FiSend size={14} />
-              Book Appointment
-            </a>
-          </div>
-        </div>
-
-        {/* NEWSLETTER SECTION */}
-        <div className="mt-12 pt-8 border-t border-[var(--accent)]">
-          <div className="max-w-2xl mx-auto text-center">
-            <h4 className="text-xl font-semibold text-[var(--foreground)] mb-2">
-              Subscribe to Our Newsletter
-            </h4>
-            <p className="text-gray-500 text-sm mb-4">
-              Get exclusive offers, beauty tips, and updates delivered to your inbox
-            </p>
-            
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-2 border border-[var(--accent)] focus:outline-none focus:border-[var(--primary)] text-sm transition rounded-lg"
-                disabled={loading}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-6 py-2 cursor-pointer bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white text-sm rounded-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
-                ) : (
-                  "Subscribe"
-                )}
-              </button>
-            </form>
-
-            {/* Message Display */}
-            {message.text && (
-              <div className={`mt-3 p-3 rounded-lg text-sm text-center animate-fade-in ${
-                message.type === "success" 
-                  ? "bg-green-50 text-green-600 border border-green-200" 
-                  : "bg-red-50 text-red-600 border border-red-200"
-              }`}>
-                {message.text}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* BOTTOM BAR - Only Copyright now */}
-        <div className="mt-12 pt-6 border-t border-[var(--accent)] text-center">
-          <p className="text-gray-500 text-xs flex items-center justify-center gap-1">
-            © {new Date().getFullYear()} Rose Aura. All rights reserved.
-            <FiHeart size={12} className="text-red-500 animate-pulse" />
+        {/* BRAND */}
+        <div>
+          <h2 className="text-2xl font-semibold text-[var(--primary)]">
+            Rose Aura
+          </h2>
+          <p className="mt-4 text-gray-600 text-sm">
+            Luxury beauty experience with elegance & care.
           </p>
+
+          <div className="flex gap-4 mt-6 text-gray-500">
+            {socialLinks.map((social, index) => (
+              <a
+                key={index}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-transform hover:scale-110 ${social.color}`}
+                aria-label={social.label}
+              >
+                <social.icon size={20} />
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* SCROLL TO TOP BUTTON */}
-        <button
-          onClick={scrollToTop}
-          className={`fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white flex items-center justify-center shadow-lg rounded-full transition-all duration-300 hover:scale-110 hover:shadow-xl ${
-            showScrollButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
-          }`}
-          aria-label="Scroll to top"
-        >
-          <FiArrowUp size={20} />
-        </button>
+        {/* QUICK LINKS */}
+        <div>
+          <h4 className="font-semibold text-[var(--primary)] mb-4">Quick Links</h4>
+          <ul className="space-y-3 text-sm text-gray-600">
+            {[
+              { name: "Home", href: "/" },
+              { name: "About", href: "/about" },
+              { name: "Services", href: "/services" },
+              { name: "Gallery", href: "/gallery" },
+              { name: "Contact", href: "/contact" },
+            ].map((item, i) => (
+              <li key={i}>
+                <Link
+                  href={item.href}
+                  className="hover:text-[var(--primary)] transition"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
+        {/* CONTACT */}
+        <div>
+          <h4 className="font-semibold text-[var(--primary)] mb-4">Contact</h4>
+          <ul className="space-y-3 text-sm text-gray-600">
+            {contactInfo.map((info, i) => (
+              <li key={i} className="flex gap-2 items-start">
+                <info.icon className="mt-1 text-[var(--primary)]" size={14} />
+                <a href={info.link} className="hover:text-[var(--primary)] transition">
+                  {info.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* HOURS */}
+        <div>
+          <h4 className="font-semibold text-[var(--primary)] mb-4">Working Hours</h4>
+          <ul className="space-y-2 text-sm text-gray-600">
+            {workingHours.map((h, i) => (
+              <li key={i} className="flex justify-between">
+                <span>{h.day}</span>
+                <span>{h.hours}</span>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/contact"
+            className="mt-6 inline-block bg-[var(--primary)] text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90 transition"
+          >
+            Book Appointment
+          </Link>
+        </div>
       </div>
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-      `}</style>
+      {/* NEWSLETTER */}
+      <div className="mt-12 border-t pt-8 text-center">
+        <h3 className="text-lg font-semibold">Subscribe Newsletter</h3>
+
+        <form onSubmit={handleSubscribe} className="flex gap-2 justify-center mt-4 flex-col sm:flex-row">
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border px-4 py-2 rounded-lg text-sm w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+            placeholder="Enter email"
+            type="email"
+          />
+          <button 
+            type="submit"
+            className="bg-[var(--primary)] text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition disabled:opacity-50"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Subscribe"}
+          </button>
+        </form>
+
+        {message.text && (
+          <p className={`mt-3 text-sm ${message.type === "success" ? "text-green-600" : "text-red-600"}`}>
+            {message.text}
+          </p>
+        )}
+      </div>
+
+      {/* COPYRIGHT */}
+      <div className="mt-10 text-center text-xs text-gray-500 flex items-center justify-center gap-1">
+        © {new Date().getFullYear()} Rose Aura
+        <FiHeart className="text-red-500" />
+      </div>
+
+      {/* SCROLL TOP */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-6 right-6 w-12 h-12 rounded-full bg-[var(--primary)] text-white flex items-center justify-center transition-all duration-300 hover:bg-opacity-90 hover:scale-110 ${
+          showScrollButton ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <FiArrowUp />
+      </button>
     </footer>
   );
 }

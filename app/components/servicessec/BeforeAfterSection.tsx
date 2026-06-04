@@ -1,11 +1,26 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image, { StaticImageData } from "next/image";
 
-// TYPES
+import haira from "../../../public/imges/haria.jpg";
+import hairb from "../../../public/imges/harib.jpg";
+import hairc from "../../../public/imges/haric.jpg";
+import haird from "../../../public/imges/haird.jpg";
+
+import skina from "../../../public/imges/skina.jpg";
+import skinb from "../../../public/imges/skinb.jpg";
+import skinc from "../../../public/imges/skinc.jpg";
+import skind from "../../../public/imges/skind.jpg";
+
+import eye from "../../../public/imges/eye.jpg";
+import lip from "../../../public/imges/lip.jpg";
+import face from "../../../public/imges/face.jpg";
+import glam from "../../../public/imges/glam.jpg";
+
 type ServiceItem = {
   title: string;
-  img: string;
+  img: StaticImageData;
 };
 
 type SectionProps = {
@@ -16,39 +31,30 @@ type SectionProps = {
 
 const servicesData = {
   hair: [
-    { title: "Hair Styling", img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800" },
-    { title: "Hair Coloring", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800" },
-    { title: "Keratin Treatment", img: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800" },
-    { title: "Hair Botox", img: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800" },
+    { title: "Hair Styling", img: haira },
+    { title: "Hair Coloring", img: hairb },
+    { title: "Keratin Treatment", img: hairc },
+    { title: "Hair Botox", img: haird },
   ],
 
   facial: [
-    { title: "Hydra Facial", img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800" },
-    { title: "Deep Cleansing", img: "https://images.unsplash.com/photo-1594824475317-d0e0b1b5b5a5?w=800" },
-    { title: "Skin Brightening", img: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=800" },
-    { title: "Anti Aging", img: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=800" },
-  ],
-
-  spa: [
-    { title: "Full Body Massage", img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800" },
-    { title: "Aromatherapy", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800" },
-    { title: "Hot Stone Therapy", img: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800" },
-    { title: "Body Detox", img: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800" },
+    { title: "Hydra Facial", img: skina },
+    { title: "Deep Cleansing", img: skinb },
+    { title: "Skin Brightening", img: skinc },
+    { title: "Anti Aging", img: skind },
   ],
 
   makeup: [
-    { title: "Bridal Makeup", img: "https://images.unsplash.com/photo-1526045478516-99145907023c?w=800" },
-    { title: "Party Makeup", img: "https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=800" },
-    { title: "HD Makeup", img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800" },
-    { title: "Photoshoot Glam", img: "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=800" },
+    { title: "Bridal Makeup", img: eye },
+    { title: "Party Makeup", img: lip },
+    { title: "HD Makeup", img: face },
+    { title: "Photoshoot Glam", img: glam },
   ],
 };
 
-// SECTION COMPONENT
 function Section({ id, title, items }: SectionProps) {
   return (
     <div id={id} className="scroll-mt-24 mt-32">
-
       {/* TITLE */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -61,7 +67,6 @@ function Section({ id, title, items }: SectionProps) {
           {title}
         </h2>
 
-        {/* underline animation */}
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 80 }}
@@ -72,8 +77,7 @@ function Section({ id, title, items }: SectionProps) {
 
       {/* GRID */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-12">
-
-        {items.map((item: ServiceItem, i: number) => (
+        {items.map((item, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 60, scale: 0.95 }}
@@ -90,16 +94,13 @@ function Section({ id, title, items }: SectionProps) {
             }}
             className="group bg-white border border-[var(--accent)] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
           >
-
             {/* IMAGE */}
-            <div className="overflow-hidden">
-              <motion.img
+            <div className="relative w-full h-44 overflow-hidden">
+              <Image
                 src={item.img}
                 alt={item.title}
-                initial={{ scale: 1.2 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 1 }}
-                className="w-full h-44 object-cover group-hover:scale-110 transition-transform duration-700"
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
             </div>
 
@@ -113,10 +114,8 @@ function Section({ id, title, items }: SectionProps) {
                 Premium luxury service
               </p>
             </div>
-
           </motion.div>
         ))}
-
       </div>
     </div>
   );
@@ -125,9 +124,7 @@ function Section({ id, title, items }: SectionProps) {
 export default function ServicesSection() {
   return (
     <section className="py-28 px-6 bg-white">
-
       <div className="max-w-7xl mx-auto">
-
         {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -150,12 +147,23 @@ export default function ServicesSection() {
           </p>
         </motion.div>
 
-        {/* SECTIONS */}
-        <Section id="hair" title="Hair Services" items={servicesData.hair} />
-        <Section id="facial" title="Facial & Skin Care" items={servicesData.facial} />
-        <Section id="spa" title="Spa & Relaxation" items={servicesData.spa} />
-        <Section id="makeup" title="Makeup Studio" items={servicesData.makeup} />
+        <Section
+          id="hair"
+          title="Hair Services"
+          items={servicesData.hair}
+        />
 
+        <Section
+          id="facial"
+          title="Facial & Skin Care"
+          items={servicesData.facial}
+        />
+
+        <Section
+          id="makeup"
+          title="Makeup Studio"
+          items={servicesData.makeup}
+        />
       </div>
     </section>
   );

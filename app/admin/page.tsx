@@ -43,9 +43,9 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Dashboard</h1>
         <p className="text-gray-500 mt-1">Welcome back to Rose Aura Admin</p>
       </div>
 
@@ -57,10 +57,10 @@ export default function AdminDashboard() {
               key={i}
               className="bg-white rounded-xl shadow-sm border border-accent p-6 hover:shadow-md transition"
             >
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
                   <p className="text-gray-500 text-sm">{stat.title}</p>
-                  <p className="text-3xl font-bold text-gray-800 mt-1">{stat.value}</p>
+                  <p className="mt-1 break-words text-2xl font-bold text-gray-800 sm:text-3xl">{stat.value}</p>
                 </div>
                 <div className={`${stat.color} p-3 rounded-full text-white`}>
                   <Icon size={24} />

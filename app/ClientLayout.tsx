@@ -5,6 +5,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/navbar";
 import Footer from "./components/Footer";
 
+
 export default function ClientLayout({
   children,
 }: {

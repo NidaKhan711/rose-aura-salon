@@ -21,128 +21,157 @@ export default function AdminGalleryPage() {
     fetchImages();
   }, []);
 
+  // ---------------- FETCH IMAGES ----------------
   const fetchImages = async () => {
     try {
       const res = await fetch("/api/admin/gallery");
+
+      if (!res.ok) throw new Error("Failed to fetch images");
+
       const data = await res.json();
-      setImages(data);
+      setImages(data || []);
     } catch (error) {
-      console.error("Failed to fetch images:", error);
+      console.error("Fetch error:", error);
+      setImages([]);
     } finally {
       setLoading(false);
     }
   };
 
+  // ---------------- UPLOAD IMAGE ----------------
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("title", title || file.name);
-    formData.append("description", description);
 
     try {
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("title", title || file.name);
+      formData.append("description", description);
+
       const res = await fetch("/api/admin/gallery", {
         method: "POST",
         body: formData,
       });
-      
+
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Upload failed");
+        throw new Error(data?.error || "Upload failed");
       }
-      
-      const newImage = await res.json();
-      setImages([newImage, ...images]);
+
+      // instantly add new image
+      setImages((prev) => [data, ...prev]);
+
       setTitle("");
       setDescription("");
       e.target.value = "";
+
       alert("Image uploaded successfully!");
     } catch (error) {
-      console.error("Upload failed:", error);
+      console.error("Upload error:", error);
       alert(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setUploading(false);
     }
   };
 
+  // ---------------- DELETE IMAGE ----------------
   const deleteImage = async (id: string) => {
     if (!confirm("Are you sure you want to delete this image?")) return;
-    
+
     try {
       const res = await fetch(`/api/admin/gallery/${id}`, {
         method: "DELETE",
       });
-      
-      if (!res.ok) throw new Error("Delete failed");
-      
-      setImages(images.filter(img => img._id !== id));
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Delete failed");
+      }
+
+      setImages((prev) => prev.filter((img) => img._id !== id));
+
       alert("Image deleted successfully!");
     } catch (error) {
-      console.error("Delete failed:", error);
-      alert("Failed to delete image");
+      console.error("Delete error:", error);
+      alert(error instanceof Error ? error.message : "Delete failed");
     }
   };
 
+  // ---------------- LOADING ----------------
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      {/* HEADER */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Gallery Management</h1>
-        <p className="text-gray-500 mt-1">Upload and manage salon images</p>
+        <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
+          Gallery Management
+        </h1>
+        <p className="text-gray-500 mt-1">
+          Upload and manage salon images
+        </p>
       </div>
 
-      {/* Upload Form */}
-      <div className="mb-8 bg-gray-50 rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold mb-4">Upload New Image</h2>
+      {/* ---------------- UPLOAD FORM ---------------- */}
+      <div className="mb-8 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-6">
+        <h2 className="text-lg font-semibold mb-4">
+          Upload New Image
+        </h2>
+
         <div className="space-y-4">
+          {/* TITLE */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               Title
             </label>
             <input
-              type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 border rounded-lg"
               placeholder="Image title"
             />
           </div>
-          
+
+          {/* DESCRIPTION */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description (Optional)
+            <label className="block text-sm font-medium mb-2">
+              Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
+              className="w-full px-3 py-2 border rounded-lg"
               rows={2}
               placeholder="Image description"
             />
           </div>
-          
+
+          {/* FILE UPLOAD */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               Image File
             </label>
-            <label className="cursor-pointer inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition disabled:opacity-50">
+
+            <label className="cursor-pointer inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg">
               <FiUpload size={16} />
               {uploading ? "Uploading..." : "Choose Image"}
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleUpload} 
-                className="hidden" 
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleUpload}
+                className="hidden"
                 disabled={uploading}
               />
             </label>
@@ -150,35 +179,45 @@ export default function AdminGalleryPage() {
         </div>
       </div>
 
-      {/* Images Grid */}
+      {/* ---------------- IMAGES GRID ---------------- */}
       {images.length === 0 ? (
-        <div className="bg-gray-50 rounded-xl border border-gray-200 p-12 text-center">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center sm:p-12">
           <FiImage className="text-gray-400 text-5xl mx-auto mb-4" />
           <p className="text-gray-500">No images uploaded yet</p>
-          <p className="text-gray-400 text-sm mt-1">
-            Upload your first image using the form above
-          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {images.map((img) => (
-            <div key={img._id} className="group relative bg-white rounded-xl border border-accent overflow-hidden shadow-sm hover:shadow-md transition">
-              <div className="aspect-square bg-soft flex items-center justify-center overflow-hidden">
-                <img 
-                  src={img.imageUrl} 
-                  alt={img.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300" 
+            <div
+              key={img._id}
+              className="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
+            >
+              {/* IMAGE */}
+              <div className="aspect-square bg-gray-100">
+                <img
+                  src={img.imageUrl}
+                  alt={img.title}
+                  className="w-full h-full object-cover"
                 />
               </div>
+
+              {/* INFO */}
               <div className="p-3">
-                <p className="text-sm text-gray-600 font-medium truncate">{img.title}</p>
+                <p className="font-medium text-sm truncate">
+                  {img.title}
+                </p>
+
                 {img.description && (
-                  <p className="text-xs text-gray-400 mt-1 line-clamp-2">{img.description}</p>
+                  <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                    {img.description}
+                  </p>
                 )}
+
+                {/* DELETE */}
                 <div className="flex justify-end mt-2">
                   <button
                     onClick={() => deleteImage(img._id)}
-                    className="p-1.5 text-red-500 hover:bg-red-50 rounded transition"
+                    className="p-1.5 text-red-500 hover:bg-red-50 rounded"
                   >
                     <FiTrash2 size={16} />
                   </button>

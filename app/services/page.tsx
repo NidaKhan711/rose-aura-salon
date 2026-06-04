@@ -5,25 +5,30 @@ import PricingPage from "../components/servicessec/PricingPage";
 import BeforeAfterSection from "../components/servicessec/BeforeAfterSection";
 import FinalCTASection from "../components/homesec/FinalCTASection";
 import BookingSection from "../components/homesec/BookingSection";
+import service from "../../public/imges/servic.jpg";
+import Image from "next/image";
 
 export default function ServicesHero() {
   return (
     <>
-
       {/* ================= HERO ================= */}
       <section className="relative h-[75vh] min-h-[520px] flex items-center justify-center overflow-hidden">
 
-        {/* BACKGROUND IMAGE (ZOOM EFFECT) */}
+        {/* BACKGROUND IMAGE (Next.js Image instead of Unsplash) */}
         <motion.div
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2, ease: "easeOut" }}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=2070&auto=format&fit=crop')",
-          }}
-        />
+          className="absolute inset-0"
+        >
+          <Image
+            src={service}
+            alt="Services Hero"
+            fill
+            priority
+            className="object-cover"
+          />
+        </motion.div>
 
         {/* DARK OVERLAY */}
         <div className="absolute inset-0 bg-black/60" />
@@ -48,7 +53,6 @@ export default function ServicesHero() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 text-center px-6"
         >
-
           <motion.p
             initial={{ opacity: 0, letterSpacing: "0.5em" }}
             animate={{ opacity: 1, letterSpacing: "0.35em" }}
@@ -67,7 +71,6 @@ export default function ServicesHero() {
             Our Services
           </motion.h1>
 
-          {/* LINE ANIMATION */}
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: 96 }}
@@ -84,13 +87,10 @@ export default function ServicesHero() {
             Discover luxury beauty treatments designed to enhance your natural glow
             and elevate your confidence.
           </motion.p>
-
         </motion.div>
-
       </section>
 
-      {/* ================= SECTIONS WITH SCROLL MOTION ================= */}
-
+      {/* ================= SECTIONS ================= */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -126,7 +126,6 @@ export default function ServicesHero() {
       >
         <BookingSection />
       </motion.div>
-
     </>
   );
 }

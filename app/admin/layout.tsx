@@ -30,9 +30,9 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-soft">
+    <div className="flex min-h-screen flex-col bg-soft md:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-auto">{children}</main>
+      <main className="min-w-0 flex-1 overflow-auto">{children}</main>
     </div>
   );
 }

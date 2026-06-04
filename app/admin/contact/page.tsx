@@ -90,7 +90,7 @@ export default function ContactPage() {
 
   if (loading) {
     return (
-      <div className="p-8 flex justify-center items-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="text-center">
           <FiLoader className="animate-spin text-primary text-4xl mx-auto mb-4" />
           <p className="text-gray-500">Loading messages...</p>
@@ -101,7 +101,7 @@ export default function ContactPage() {
 
   if (error) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-6 lg:p-8">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600">
           <p className="font-semibold">Error: {error}</p>
           <button 
@@ -116,16 +116,16 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Contact Messages</h1>
+        <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Contact Messages</h1>
         <p className="text-gray-500 mt-1">
           Messages from website visitors ({messages.length} total)
         </p>
       </div>
 
       {messages.length === 0 ? (
-        <div className="bg-gray-50 rounded-xl border border-gray-200 p-12 text-center">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center sm:p-12">
           <FiMail className="text-gray-400 text-5xl mx-auto mb-4" />
           <p className="text-gray-500">No messages yet</p>
           <p className="text-gray-400 text-sm mt-1">
@@ -137,21 +137,21 @@ export default function ContactPage() {
           {messages.map((msg) => (
             <div 
               key={msg.id} 
-              className={`bg-white rounded-xl border p-5 hover:shadow-sm transition cursor-pointer ${
+              className={`cursor-pointer rounded-xl border bg-white p-4 transition hover:shadow-sm sm:p-5 ${
                 !msg.isRead ? 'border-primary bg-primary/5' : 'border-gray-200'
               }`}
               onClick={() => !msg.isRead && markAsRead(msg.id)}
             >
-              <div className="flex justify-between items-start">
-                <div className="space-y-2 flex-1">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 flex-1 space-y-2">
                   <div className="flex items-center gap-4 flex-wrap">
                     <span className="flex items-center gap-1 text-gray-700">
                       <FiUser size={14} className="text-primary" />
                       <span className="font-medium">{msg.name}</span>
                     </span>
-                    <span className="flex items-center gap-1 text-gray-500 text-sm">
+                    <span className="flex min-w-0 items-center gap-1 text-sm text-gray-500">
                       <FiMail size={14} />
-                      {msg.email}
+                      <span className="break-all">{msg.email}</span>
                     </span>
                     {msg.phone && (
                       <span className="flex items-center gap-1 text-gray-500 text-sm">
@@ -171,14 +171,14 @@ export default function ContactPage() {
                       Service: {msg.service}
                     </p>
                   )}
-                  <p className="text-gray-600">{msg.message}</p>
+                  <p className="break-words text-gray-600">{msg.message}</p>
                 </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteMessage(msg.id);
                   }}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded transition"
+                  className="self-end rounded p-2 text-red-500 transition hover:bg-red-50 sm:self-start"
                   aria-label="Delete message"
                 >
                   <FiTrash2 size={18} />

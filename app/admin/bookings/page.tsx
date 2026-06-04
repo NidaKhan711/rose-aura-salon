@@ -75,15 +75,15 @@ export default function BookingsPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Bookings</h1>
+        <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Bookings</h1>
         <p className="text-gray-500 mt-1">Manage all appointments</p>
       </div>
 
       <div className="bg-white rounded-xl border border-accent overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[760px]">
             <thead className="bg-soft">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Client</th>
@@ -100,7 +100,7 @@ export default function BookingsPage() {
                   <td className="px-6 py-4">
                     <div>
                       <p className="font-medium">{booking.name}</p>
-                      <p className="text-xs text-gray-500">{booking.email}</p>
+                      <p className="break-all text-xs text-gray-500">{booking.email}</p>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-600">{booking.service}</td>

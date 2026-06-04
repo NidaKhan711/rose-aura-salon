@@ -30,15 +30,15 @@ export default function Sidebar() {
 };
 
   return (
-    <aside className="w-72 bg-white border-r border-accent flex flex-col">
+    <aside className="sticky top-0 z-30 flex w-full flex-col border-b border-accent bg-white md:min-h-screen md:w-72 md:border-b-0 md:border-r">
       {/* Brand */}
-      <div className="p-6 border-b border-accent">
-        <h2 className="text-2xl font-bold text-primary">Rose Aura</h2>
+      <div className="border-b border-accent px-4 py-3 md:p-6">
+        <h2 className="text-xl font-bold text-primary md:text-2xl">Rose Aura</h2>
         <p className="text-xs text-gray-500 mt-1">Admin Panel</p>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex gap-2 overflow-x-auto p-3 md:flex-1 md:flex-col md:space-y-1 md:overflow-visible md:p-4">
         {menuItems.map((item) => {
           const isActive = pathname === item.path;
           const Icon = item.icon;
@@ -46,13 +46,13 @@ export default function Sidebar() {
             <Link
               key={item.path}
               href={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-200 md:gap-3 md:px-4 md:py-3 md:text-base ${
                 isActive
                   ? "bg-primary text-white shadow-md"
                   : "text-gray-600 hover:bg-soft hover:text-primary"
               }`}
             >
-              <Icon size={20} />
+              <Icon className="h-5 w-5 shrink-0" />
               <span className="font-medium">{item.name}</span>
             </Link>
           );
@@ -60,12 +60,12 @@ export default function Sidebar() {
       </nav>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-accent">
+      <div className="border-t border-accent p-3 md:p-4">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-500 hover:bg-red-50 transition duration-200"
+          className="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-red-500 transition duration-200 hover:bg-red-50 md:justify-start md:gap-3 md:px-4 md:py-3 md:text-base"
         >
-          <FiLogOut size={20} />
+          <FiLogOut className="h-5 w-5 shrink-0" />
           <span className="font-medium">Logout</span>
         </button>
       </div>
