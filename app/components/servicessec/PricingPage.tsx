@@ -7,11 +7,7 @@ const packages = [
     name: "Basic Glow",
     price: "$49",
     desc: "Essential beauty care for everyday freshness.",
-    features: [
-      "Basic Facial",
-      "Hair Wash & Styling",
-      "Skin Consultation",
-    ],
+    features: ["Basic Facial", "Hair Wash & Styling", "Skin Consultation"],
   },
   {
     name: "Luxury Care",
@@ -40,10 +36,20 @@ const packages = [
 ];
 
 export default function PricingPage() {
+  const scrollToBooking = () => {
+    const el = document.getElementById("booking");
+
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      // fallback if booking is on another page
+      window.location.href = "/#booking";
+    }
+  };
+
   return (
     <section className="py-32 px-6 bg-[var(--soft)] relative overflow-hidden">
 
-      {/* BACKGROUND GLOW */}
       <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[var(--primary)]/10 blur-3xl rounded-full" />
       <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-[var(--accent)]/10 blur-3xl rounded-full" />
 
@@ -86,80 +92,55 @@ export default function PricingPage() {
                 delay: i * 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{
-                y: -12,
-                scale: 1.03,
-              }}
+              whileHover={{ y: -12, scale: 1.03 }}
               className={`relative bg-white border p-8 text-left shadow-sm transition-all duration-500 overflow-hidden group
-                ${item.featured
-                  ? "border-[var(--primary)] shadow-xl"
-                  : "border-[var(--accent)]"
-                }
-              `}
+                ${
+                  item.featured
+                    ? "border-[var(--primary)] shadow-xl"
+                    : "border-[var(--accent)]"
+                }`}
             >
 
-              {/* FEATURED BADGE */}
               {item.featured && (
                 <div className="absolute top-4 right-4 text-xs bg-[var(--primary)] text-white px-3 py-1 rounded-full">
                   Most Popular
                 </div>
               )}
 
-              {/* SHINE EFFECT */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -left-40 top-0 h-full w-20 bg-white/30 rotate-12 group-hover:translate-x-[500%] transition-transform duration-1000" />
-              </div>
-
               <h3 className="text-2xl font-semibold text-[var(--primary)]">
                 {item.name}
               </h3>
 
-              <p className="mt-2 text-gray-500 text-sm">
-                {item.desc}
-              </p>
+              <p className="mt-2 text-gray-500 text-sm">{item.desc}</p>
 
-              <h4 className="mt-6 text-4xl font-bold text-black">
-                {item.price}
-              </h4>
+              <h4 className="mt-6 text-4xl font-bold">{item.price}</h4>
 
-              {/* FEATURES */}
               <ul className="mt-6 space-y-2 text-gray-600 text-sm">
                 {item.features.map((f, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-center gap-2 hover:translate-x-1 transition"
-                  >
+                  <li key={idx} className="flex items-center gap-2">
                     <span className="text-[var(--primary)]">✔</span> {f}
                   </li>
                 ))}
               </ul>
 
-              {/* BUTTON - Changed to anchor tag with href="#book" */}
-              <motion.a
-                href="#booking"
+              {/* BUTTON FIXED */}
+              <motion.button
+                onClick={scrollToBooking}
                 whileHover={{
                   y: -3,
                   scale: 1.03,
                   boxShadow: "0px 15px 30px rgba(0,0,0,0.15)",
                 }}
                 whileTap={{ scale: 0.97 }}
-                className="mt-8 w-full relative border border-[var(--primary)] text-[var(--primary)] py-3 overflow-hidden group transition block text-center cursor-pointer"
+                className="mt-8 w-full border border-[var(--primary)] text-[var(--primary)] py-3 block text-center relative overflow-hidden"
               >
-
-                {/* BUTTON SHINE */}
-                <span className="absolute inset-0 bg-[var(--primary)] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-
-                <span className="relative group-hover:text-white transition">
-                  Book Now
-                </span>
-
-              </motion.a>
+                Book Now
+              </motion.button>
 
             </motion.div>
           ))}
 
         </div>
-
       </div>
     </section>
   );
