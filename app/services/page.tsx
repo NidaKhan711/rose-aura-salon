@@ -51,7 +51,7 @@ export default function ServicesHero() {
           initial={{ opacity: 0, y: 50, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 text-center px-6"
+          className="relative z-10 text-center px-6 hero-content"
         >
           <motion.p
             initial={{ opacity: 0, letterSpacing: "0.5em" }}

@@ -32,7 +32,7 @@ export default function AboutHero() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 text-center px-6"
+          className="relative z-10 text-center px-6 hero-content"
         >
           <p className="uppercase tracking-[0.35em] text-white/70 text-xs md:text-sm">
             Rose Aura Salon
