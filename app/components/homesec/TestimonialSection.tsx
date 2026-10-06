@@ -70,7 +70,7 @@ export default function TestimonialSection() {
               }}
               viewport={{ once: true, amount: 0.3 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative bg-white border border-[#E7E1B1] p-8 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden"
+              className="group relative bg-white border border-[var(--blush)] p-8 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden"
             >
 
               {/* SHINE */}

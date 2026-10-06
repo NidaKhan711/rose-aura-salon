@@ -37,7 +37,7 @@ export default function HeroSection() {
 
             <a
               href="/services"
-              className="border border-[var(--accent)] px-6 py-3 hover:bg-[#FBF5DD] transition"
+              className="border border-[var(--accent)] px-6 py-3 hover:bg-[var(--blush)] transition"
             >
               View Services
             </a>

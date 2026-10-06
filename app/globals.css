@@ -2,14 +2,21 @@
 
 /* 🌸 COLORS */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --forest-green: #0E3B1E;
+  --moss-green: #2F6B3F;
+  --muted-rose: #B86B7C;
+  --blush: #EFD9DC;
+  --soft-white: #F8F9F5;
+  --ink: #18221B;
+  --grey-green: #5B665E;
 
-  --primary: #0D530E;
-  --secondary: #306D29;
-
-  --accent: #E7E1B1;
-  --soft: #FBF5DD;
+  --background: var(--soft-white);
+  --foreground: var(--ink);
+  --primary: var(--forest-green);
+  --secondary: var(--moss-green);
+  --accent: var(--muted-rose);
+  --soft: var(--blush);
+  --muted: var(--grey-green);
 }
 
 /* Tailwind mapping */
@@ -21,6 +28,9 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-soft: var(--soft);
+  --color-muted: var(--muted);
+  --color-ink: var(--ink);
+  --color-blush: var(--blush);
 
   --font-sans: var(--font-poppins);
   --font-display: var(--font-dmserif);
@@ -31,12 +41,83 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins), Arial, sans-serif;
+  font-weight: 300;
 }
 
 /* HEADINGS STYLISH */
 h1, h2, h3, h4 {
   font-family: var(--font-dmserif), serif;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--primary);
+  letter-spacing: 0;
+}
+
+p {
+  color: var(--muted);
+}
+
+.text-black {
+  color: var(--ink) !important;
+}
+
+h1.text-black,
+h2.text-black,
+h3.text-black,
+h4.text-black {
+  color: var(--primary) !important;
+}
+
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-gray-700 {
+  color: var(--muted) !important;
+}
+
+.text-gray-800 {
+  color: var(--ink) !important;
+}
+
+.bg-white {
+  background-color: var(--soft-white) !important;
+}
+
+.from-white {
+  --tw-gradient-from: var(--soft-white) var(--tw-gradient-from-position) !important;
+}
+
+.border-gray-200 {
+  border-color: var(--blush) !important;
+}
+
+a,
+button,
+input,
+select,
+textarea,
+label,
+th,
+td {
+  font-family: var(--font-poppins), Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea,
+strong,
+b,
+.font-medium,
+.font-semibold,
+.font-bold {
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400 !important;
 }
 
 /* SELECTION */

@@ -3,12 +3,22 @@ import type { NextRequest } from "next/server";
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-  const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
-  const isApiRoute = request.nextUrl.pathname.startsWith("/api/admin");
+  const { pathname } = request.nextUrl;
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isApiRoute = pathname.startsWith("/api/admin");
   const isLoginPage = request.nextUrl.pathname === "/login";
+  const publicApiRequests = [
+    { path: "/api/admin/bookings", method: "POST" },
+    { path: "/api/admin/contact", method: "POST" },
+    { path: "/api/admin/subscribe", method: "POST" },
+    { path: "/api/admin/gallery", method: "GET" },
+  ];
+  const isPublicApiRequest = publicApiRequests.some(
+    (route) => pathname === route.path && request.method === route.method
+  );
 
   // Redirect to login if no token on admin routes
-  if ((isAdminRoute || isApiRoute) && !token) {
+  if ((isAdminRoute || (isApiRoute && !isPublicApiRequest)) && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

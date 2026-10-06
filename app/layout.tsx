@@ -7,7 +7,7 @@ import ClientLayout from "./ClientLayout";
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400"],
 });
 
 const dmserif = DM_Serif_Display({
@@ -31,7 +31,7 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${dmserif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-black">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

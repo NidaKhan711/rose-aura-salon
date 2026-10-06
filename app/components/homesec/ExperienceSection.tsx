@@ -90,7 +90,7 @@ export default function ExperienceSection() {
           className="relative group"
         >
 
-          <div className="relative w-full h-[520px] overflow-hidden border border-[#E7E1B1] shadow-xl">
+          <div className="relative w-full h-[520px] overflow-hidden border border-[var(--blush)] shadow-xl">
 
             {/* NEXT IMAGE */}
             <Image

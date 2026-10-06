@@ -77,7 +77,7 @@ export default function ServicesSection() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               whileHover={{ y: -12 }}
-              className="group relative bg-gradient-to-b from-white to-[#FFFDF7] border border-[#E7E1B1] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
+              className="group relative bg-gradient-to-b from-white to-[var(--soft-white)] border border-[var(--blush)] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500"
             >
 
               {/* SHINE EFFECT */}
