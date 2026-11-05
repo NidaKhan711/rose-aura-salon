@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins, DM_Serif_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
- import lenis from "lenis";
+import lenis from "lenis";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -32,6 +33,10 @@ export default function RootLayout({
       className={`${poppins.variable} ${dmserif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Script
+          src="http://localhost:3000/api/widget.js?websiteId=cmw3kubzb0003ugk4qn31sbg7"
+          strategy="afterInteractive"
+        />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
