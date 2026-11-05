@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${dmserif.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Script
-          src="http://localhost:3000/api/widget.js?websiteId=cmw3kubzb0003ugk4qn31sbg7"
+          src="https://roseaurapk.vercel.app/api/widget.js?websiteId=cmw3kubzb0003ugk4qn31sbg7"
           strategy="afterInteractive"
         />
         <ClientLayout>{children}</ClientLayout>
